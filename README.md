@@ -1,129 +1,135 @@
-# meeting_summarization
-Transcribe and summarize meetings almost for free (just the costs of AssemblyAI and Openrouter API calls).
+# Google Colab Script: Transcribe Audio & Generate Summaries - A Low-Cost Alternative
 
-Google Colab Script: Transcribe Audio & Generate Summaries
-This script, designed for Google Colab, automates the process of transcribing audio files (MP3s) and then generating concise summaries of the transcribed text. It leverages AssemblyAI for accurate speech-to-text transcription and OpenRouter (with a model like Google's Gemini Flash) for intelligent summarization. A key feature is its integration with Google Drive, allowing for streamlined workflows, especially when combined with Google Drive Desktop.
+This script is designed as a low-cost alternative to expensive transcription and summarization services like Otter.ai, putting powerful AI tools in your hands.
 
-Overview
+This Google Colab script automates the process of transcribing audio files (MP3s) and generating concise summaries of the transcribed text. It leverages **AssemblyAI** for accurate speech-to-text transcription and **OpenRouter** (e.g., with Google's Gemini Flash) for intelligent summarization. A key feature is its integration with **Google Drive**, enabling streamlined workflows—especially when used with Google Drive Desktop.
+
+---
+
+## Overview
+
 The script provides two main functionalities:
 
-Transcribe and Summarize: Upload or select an MP3 audio file from your Google Drive, transcribe it, and then generate a summary.
+- **Transcribe and Summarize**: Upload or select an MP3 audio file from your Google Drive, transcribe it, and then generate a summary.
+- **Summarize Existing Transcript**: Select an existing `.txt` transcript file from your Google Drive and generate a summary.
 
-Summarize Existing Transcript: Select an existing text file (.txt) containing a transcript from your Google Drive and generate a summary.
+Both transcripts and summaries are saved back to your specified Google Drive folder.
 
-Both the generated transcripts and summaries are saved back to your specified Google Drive folder.
+---
 
-Features
-Accurate Transcription: Utilizes AssemblyAI's universal speech model for robust transcription across diverse audio, featuring automatic language detection and speaker labeling.
+## Features
 
-Intelligent Summarization: Employs an LLM via OpenRouter (e.g., google/gemini-2.5-flash-preview) to create detailed summaries covering main discussion points, decisions, and action items.
+- **Accurate Transcription**: Uses AssemblyAI’s universal speech model with automatic language detection and speaker labeling.
+- **Intelligent Summarization**: Employs an LLM via OpenRouter (e.g., `google/gemini-2.5-flash-preview`) to produce summaries that highlight key points, decisions, and action items.
+- **Google Drive Integration**: Reads from and writes to a user-defined Google Drive folder.
+- **User-Friendly Interface**: Provides guided prompts and menus in the Colab environment.
+- **Flexible Recording Options**: Record audio using any preferred tool (e.g., **Audacity**, **Voicemeeter**).
+- **Automation Potential**: Optimized for workflows using **Google Drive Desktop**.
 
-Google Drive Integration: Seamlessly reads audio/transcript files from and saves output files to a user-defined Google Drive folder.
+---
 
-User-Friendly Interface: Guides users through the process with clear prompts and file selection menus within the Colab environment.
+## Requirements
 
-Flexible Recording Options: You can use your favorite audio recording software (e.g., Zoom, OBS, Audacity, voice memo apps) to create your MP3 meeting recordings.
+- A Google Account (for Google Colab and Google Drive).
+- **API Keys**:
+  - **AssemblyAI API Key**: For transcription.
+  - **OpenRouter API Key**: For summarization (or any OpenAI-compatible key).
+- **Python Libraries**: `assemblyai`, `openai`, `google-colab` (installed by the first cell).
 
-Automation Potential: Designed for easy automation, particularly with Google Drive Desktop.
+---
 
-Requirements
-A Google Account (for Google Colab and Google Drive).
+## Setup Instructions
 
-API Keys:
+1. **Open the Notebook in Google Colab.**
 
-AssemblyAI API Key: For transcription services.
+2. **Install Libraries**  
+   Run the first cell: `# @title 0. Install Libraries`
 
-OpenRouter API Key: For summarization services (or any other OpenAI-compatible API key and endpoint you wish to configure).
+3. **Configure API Keys**  
+   In the Colab interface:
+   - Click the 🔑 **Secrets** icon in the left sidebar.
+   - Add secrets:
+     - Name: `ASSEMBLYAI_API_KEY`, Value: _your key_
+     - Name: `OPENROUTER_API_KEY`, Value: _your key_
 
-Python Libraries: assemblyai, openai, google-colab (installation is handled by the first cell in the notebook).
+4. **Configure Google Drive Path**  
+   In the second cell: `# @title 1. Setup, Configuration, and User Intent`
+   - Set the `DRIVE_BASE_FOLDER_PATH` variable to your desired folder, e.g.,  
+     `'MyDrive/MyMeetingRecordings'` or `'MyDrive/ProjectX/AudioLogs'`.
 
-Setup Instructions
-Open the Notebook in Google Colab.
+---
 
-Install Libraries: Run the first cell (# @title 0. Install Libraries) to install the necessary Python packages.
+## How to Use
 
-Configure API Keys:
+### 1. Recording Your Meetings
 
-In the Google Colab interface, click the key icon (🔑) in the left sidebar to open the "Secrets" tab.
+- Use tools like **Zoom**, **OBS**, or **Audacity** to record.
+- Ensure the file is saved as **MP3**.
+- Place the MP3 file into the folder set by `DRIVE_BASE_FOLDER_PATH`.
 
-Click "+ Add a new secret".
+### 2. Running the Notebook
 
-For the Name, enter ASSEMBLYAI_API_KEY. For the Value, paste your AssemblyAI API key. Toggle "Notebook access" ON.
+- **Run Installation Cell**  
+  `# @title 0. Install Libraries`
 
-Click "+ Add a new secret" again.
+- **Run Setup & Intent Cell**  
+  `# @title 1. Setup, Configuration, and User Intent`  
+  You'll be prompted to choose an option:
+  - `1`: Transcribe a new audio file and summarize it.
+  - `2`: Summarize an existing `.txt` transcript.
 
-For the Name, enter OPENROUTER_API_KEY. For the Value, paste your OpenRouter API key. Toggle "Notebook access" ON.
+- **Run Main Logic Cell**  
+  `# @title 2. Main Script Logic: Processing and Summarization`  
+  - Authorize Google Drive access.
+  - Select the MP3 or transcript file by number.
+  - The script will transcribe (if needed) and summarize.
+  - Output files are saved to your Google Drive folder with informative filenames.
 
-Configure Google Drive Path:
+---
 
-In the second cell of the notebook (# @title 1. Setup, Configuration, and User Intent), locate the DRIVE_BASE_FOLDER_PATH variable.
+## Automation with Google Drive Desktop
 
-Crucially, update this path to your desired folder within your Google Drive where your MP3s are (or will be) stored, and where you want transcripts and summaries to be saved. For example: 'MyDrive/MyMeetingRecordings' or 'MyDrive/ProjectX/AudioLogs'.
+**Use case**: Streamline recording-to-summary workflows.
 
-The script will attempt to create this folder if it doesn't exist when you run the main logic cell.
+1. **Install Google Drive Desktop** and sync a local folder.
 
-How to Use
-1. Recording Your Meetings
-Use any recording software you prefer to capture your meetings or audio.
+2. **Update `DRIVE_BASE_FOLDER_PATH`** in the script to match the synced Drive folder (e.g., `'MyDrive/MySyncedMeetings'`).
 
-Ensure the final audio is saved or converted to MP3 format.
+3. **Workflow**:
+   - Save your MP3 into the synced folder.
+   - Drive syncs it automatically.
+   - Launch the Colab script and select the file—no manual uploads needed.
 
-Place these MP3 files into the Google Drive folder you configured in DRIVE_BASE_FOLDER_PATH.
+---
 
-2. Running the Notebook
-Run the Installation Cell: Execute the first cell (# @title 0. Install Libraries) to install dependencies.
+## Customization
 
-Run the Setup & Intent Cell: Execute the second cell (# @title 1. Setup, Configuration, and User Intent).
+- **Summarization Model**  
+  Modify the model used in `openrouter_client.chat.completions.create()`.  
+  Ensure it’s supported by your OpenRouter or equivalent provider.
 
-This cell imports libraries, loads your API keys from secrets, and prompts you to choose an operation:
+- **System Prompt**  
+  Edit the system prompt to adjust tone, style, or detail level.
 
-1: Transcribe a new audio file and then summarize it.
+- **Transcription Configuration**  
+  Update `aai.TranscriptionConfig` for advanced settings like:
+  ```python
+  speech_model=aai.SpeechModel.universal
+  language_detection=True
+---
 
-2: Summarize an existing transcript file (.txt).
+## Troubleshooting & Notes
 
-Run the Main Logic Cell: Execute the third cell (# @title 2. Main Script Logic: Processing and Summarization).
+- Ensure your API keys are correctly added to Colab secrets and have notebook access enabled.
+- Double-check the `DRIVE_BASE_FOLDER_PATH` is accurately set to an existing or creatable path in your Google Drive.
+- If transcription or summarization fails, check the error messages printed by the script. This often relates to:
+  - API key issues
+  - Model availability
+  - Problems with the input file
+- For very long audio files, transcription and summarization can take a significant amount of time and may hit:
+  - API rate limits
+  - Token limits for summarization
 
-Mount Google Drive: You will be prompted to authorize Google Drive access.
+---
 
-File Selection:
-
-If you chose option 1, the script will list MP3 files from your configured Drive folder. Enter the number corresponding to the file you want to process.
-
-If you chose option 2, the script will list .txt files. Enter the number corresponding to the transcript you want to summarize.
-
-Processing: The script will then perform the transcription (if applicable) and summarization.
-
-Output: Generated transcripts and summaries will be saved to your specified Google Drive folder with filenames indicating the original file and date/time of processing.
-
-Automation with Google Drive Desktop
-The Google Drive integration is particularly powerful when used with the Google Drive Desktop application.
-
-Set up Google Drive Desktop: Install and configure Google Drive Desktop on your computer to sync a local folder with your Google Drive.
-
-Configure DRIVE_BASE_FOLDER_PATH: In the Colab script, set DRIVE_BASE_FOLDER_PATH to point to the synced folder within your Google Drive (e.g., if your local synced folder C:\Users\YourName\MySyncedMeetings appears as MyDrive/MySyncedMeetings in Google Drive, use the latter).
-
-Automated Workflow:
-
-Save your meeting recordings (as MP3s) directly into this local synced folder on your computer.
-
-Google Drive Desktop will automatically upload/sync the MP3 to your Google Drive.
-
-When you run the Colab script, the new MP3 will be available for selection without needing to manually upload it to Google Drive through the web interface or move it within Drive. This significantly streamlines the process from recording to summarization.
-
-Customization
-Summarization Model: You can change the LLM model used for summarization by modifying the model parameter in the openrouter_client.chat.completions.create() call within the script. Ensure the model is available through your OpenRouter (or other configured) API.
-
-System Prompt: Adjust the system prompt provided to the LLM to tailor the style or focus of the summaries.
-
-Transcription Configuration: Modify the aai.TranscriptionConfig parameters if you have specific transcription needs. The script defaults to speech_model=aai.SpeechModel.universal and language_detection=True.
-
-Troubleshooting/Notes
-Ensure your API keys are correctly added to Colab secrets and have notebook access enabled.
-
-Double-check the DRIVE_BASE_FOLDER_PATH is accurately set to an existing or creatable path in your Google Drive.
-
-If transcription or summarization fails, check the error messages printed by the script. This often relates to API key issues, model availability, or problems with the input file.
-
-For very long audio files, transcription and summarization can take a significant amount of time and may hit API rate limits or token limits for summarization.
-
-This script aims to provide a powerful yet easy-to-use tool for managing and understanding your audio recordings. Enjoy the automation!
+This script aims to provide a powerful yet easy-to-use tool for managing and understanding your audio recordings. **Enjoy the automation!**
